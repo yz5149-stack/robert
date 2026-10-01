@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoHo Site</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="viewport"></div>
+
+  <header id="toolbar">
+    <strong class="brand">SoHo Site</strong>
+    <div class="group">
+      <button id="btn-reset">Reset</button>
+      <button id="btn-labels" aria-pressed="true">Labels</button>
+      <button id="btn-view" data-view="perspective">Top view</button>
+    </div>
+    <div class="group" id="context-tools"></div>
+  </header>
+
+  <aside id="info"></aside>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

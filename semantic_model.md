@@ -108,6 +108,50 @@ Fixed objects on the sidewalk.
 
 ---
 
+## Rules
+
+1. **Frontage:** a Building takes 20 m of frontage and a ParkingGarage 30 m. Things on the
+   same side of a segment cannot overlap, and they stay at least 8 m from the segment ends.
+2. **Floors:** a Building has 1–12 floors; a ParkingGarage has 1–8 levels.
+3. **Loading docks:** only a `loft` Building can have a LoadingDock, at most one each.
+   Dock height is 0.6–1.0 m. A loft with a dock cannot change its use.
+4. **Vault lights:** a SidewalkVault can only be added in front of a Building with a
+   basement, at most one each. Removing the basement removes the vault.
+5. **Subway entrances:** need a sidewalk at least 3 m wide.
+6. **Street furniture:** at most one item per 15 m of segment length; items on the same
+   side stay at least 4 m apart.
+7. **Elevation:** a StreetSegment's elevation stays between 0.5 m and 5.0 m.
+8. **Derived values:**
+   - Intersection elevation = mean elevation of its connected segments.
+   - Segment slope (%) = (elevation of end intersection − start intersection) / length × 100.
+   - Garage `upperLevelElevation` = segment elevation + levels × 3 m.
+9. **Attached things go together:** removing a Building also removes its LoadingDock and
+   SidewalkVault.
+10. The street network (segments and intersections) is fixed: it can be edited, not deleted.
+
+## Actions
+
+| Action | Applies to | Rules checked |
+|---|---|---|
+| `add_building(segment)` | StreetSegment | 1 |
+| `add_garage(segment)` | StreetSegment | 1 |
+| `add_subway_entrance(segment)` | StreetSegment | 5 |
+| `add_drain(segment)` | StreetSegment | — |
+| `add_furniture(segment, type)` | StreetSegment | 6 |
+| `change_surface(segment)` | StreetSegment | — |
+| `raise / lower(segment)` (±0.2 m) | StreetSegment | 7, 8 |
+| `add / remove_floor(building)` | Building, ParkingGarage | 2, 8 |
+| `change_use(building)` | Building | 3 |
+| `toggle_awning / toggle_basement(building)` | Building | 4 |
+| `add_loading_dock(building)` | Building | 3 |
+| `toggle_ramp / raise / lower(dock)` | LoadingDock | 3 |
+| `add_vault(building)` | Building | 4 |
+| `change_condition(vault)` | SidewalkVault | — |
+| `toggle_cover(drain)` | DrainageInlet | — |
+| `toggle_signal / toggle_curb_ramp(intersection)` | Intersection | — |
+| `change_type(furniture)` | StreetFurniture | — |
+| `remove(thing)` | anything except segments and intersections | 9, 10 |
+
 ## Example Site
 
 **Intersections:** Prince & Broadway, Prince & Greene, Spring & Broadway,
@@ -121,4 +165,7 @@ Broome & Broadway, Broome & Greene, Canal & Broadway.
 | SEG-03 | Broadway | Spring St → Broome St | 85 m | 2.0 m | concrete | sidewalk vault lights |
 | SEG-04 | Greene St | Prince St → Broome St | 170 m | 2.4 m | cobblestone | cast-iron lofts |
 | SEG-05 | Broome St | Greene St → Broadway | 150 m | 2.2 m | asphalt | loft with loading dock + ramp, parking garage |
-| SEG-06 | Canal St | at Broadway | 100 m | 1.2 m | asphalt | storm drain, Canal St subway entrance |
+| SEG-08 | Broadway | Broome St → Canal St | 100 m | 1.6 m | concrete | shops, tree |
+| SEG-06 | Canal St | Broadway → west | 100 m | 1.2 m | asphalt | storm drain, Canal St subway entrance |
+
+The full example data (buildings, docks, vaults, furniture) is in `js/model.js`.
